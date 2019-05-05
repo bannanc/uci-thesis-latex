@@ -280,3 +280,24 @@
   \@input@{\jobname.bbl}
   \end{singlespacing}
 }
+
+
+%%% Adde to fix odd centering problem following discussion on stackexchange
+% https://tex.stackexchange.com/questions/427514/left-alignment-for-table-of-contents-using-custom-thesis-document-class
+
+\renewcommand*\l@chapter[2]{%
+ \ifnum \c@tocdepth >\m@ne
+  \addpenalty{-\@highpenalty}%
+  \vskip 1.0em \@plus\p@
+  \setlength\@tempdima{1.5em}%
+  \begingroup
+   \parindent \z@ \rightskip \@pnumwidth
+   \parfillskip -\@pnumwidth
+   \leavevmode \bfseries                
+   %%% \advance\leftskip\@tempdima  %%% <--- Lose (or comment out) this line
+   \leftskip\@tempdima              %%% <--- Add this line
+   \hskip -\leftskip
+   #1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+   \penalty\@highpenalty
+  \endgroup
+ \fi}
